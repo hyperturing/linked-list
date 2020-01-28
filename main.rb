@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require_relative 'linked_list'
 
 list = LinkedList.new
@@ -7,14 +9,24 @@ list.prepend(2)
 list.prepend(1)
 list.append(5)
 
-#puts list.head
-#puts list.tail
+puts "List head is #{list.head}"
+puts "List tail is #{list.tail}"
 puts list
-puts list.pop
+puts "Popping item #{list.pop} out of list"
 puts list
+
+# A value and location to test list accessor and mutation methods
+value = 6
+location = 1
 
 puts list.at(5)
+puts list.contains(value)
+puts list.find(value)
 
-puts list.contains(4)
+puts "Inserting #{value} at location #{location}"
+list.insert_at(value, location)
+puts list
 
-puts list.find(6)
+puts "Removing item at location #{location} "
+list.remove_at(location)
+puts list
