@@ -1,12 +1,12 @@
 require_relative 'node'
 
 class LinkedList
-  attr_accessor :tail
   def initialize
     @head = nil
     @tail = nil
   end
 
+  # List mutator methods
   def prepend(value)
     if @head.nil?
       @head = Node.new(value, @tail)
@@ -15,26 +15,24 @@ class LinkedList
     end
   end
 
-  def to_s
-    string = ''
+  def append(value)
     @start = @head
-    until @start.nil? do
-      string << " ( #{@start.value} ) ->"
-      @start = @start.next_node
-    end
-    string + ' nil'
+    @start = @start.next_node until @start.next_node.nil?
+    @start.next_node = Node.new(value)
   end
 
-  def size
-    @size = 0
+  def pop
     @start = @head
-    until @start.nil?
-      @size += 1
-      @start = @start.next_node
-    end
-    @size
+    # Traverse the list until reaching the second-to-last node
+    @start = @start.next_node until @start.next_node.next_node.nil?
+    @popped_value = @start.next_node.value
+    # Remove the last node by pointing the second-to-last node to nil
+    @start.next_node = nil
+
+    @popped_value
   end
 
+  # List accessor methods
   def head
     @head.value
   end
@@ -52,6 +50,43 @@ class LinkedList
       @location += 1
       @start = @start.next_node
     end
-    @start.nil? ? -1 : @start.value
+    @start.nil? ? 'Index out of bounds' : @start.value
+  end
+
+  def contains(value)
+    @start = @head
+    @start = @start.next_node until @start.nil? || @start.value == value
+    !@start.nil? && @start.value == value ? true : false
+  end
+
+  def find(value)
+    @location = 0
+    @start = @head
+    until @start.nil? || @start.value == value
+      @location += 1
+      @start = @start.next_node
+    end
+    @start.nil? ? "#{value} not found in list" : @location
+  end
+
+  # List output methods
+  def to_s
+    string = ''
+    @start = @head
+    until @start.nil?
+      string << " ( #{@start.value} ) ->"
+      @start = @start.next_node
+    end
+    string + ' nil'
+  end
+
+  def size
+    @size = 0
+    @start = @head
+    until @start.nil?
+      @size += 1
+      @start = @start.next_node
+    end
+    @size
   end
 end
